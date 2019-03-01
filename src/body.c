@@ -26,6 +26,38 @@ body* body_create(){
     return nb;
 }
 
+void body_init(body *b){
+    b->pos = malloc(3*sizeof(double));
+    b->vel = malloc(3*sizeof(double));
+
+    b->id = -1;
+
+    b->px = &b->pos[0];
+    b->py = &b->pos[1];
+    b->pz = &b->pos[2];
+
+    b->vx = &b->vel[0];
+    b->vy = &b->vel[1];
+    b->vz = &b->vel[2];
+
+    b->mass=0;
+    b->diam=0;
+    for(int i=0;i<3;i++){
+        b->pos[i] = 0;
+        b->vel[i] = 0;
+    }
+    b->angmom=0;
+}
+
+void body_delete(body *b){
+    if(b->pos){
+        free(b->pos);
+    }
+    if(b->vel){
+        free(b->vel);
+    }
+}
+
 void body_destroy(body *b){
     if(b->pos){
         free(b->pos);
@@ -71,6 +103,7 @@ void body_set_vel_y(body *b, double v){*b->vy=v;}
 void body_set_vel_z(body *b, double v){*b->vz=v;}
 void body_set_angmom(body *b, double a){b->angmom=a;}
 
+double body_get_id(body b){return b.id;}
 double body_get_mass(body b){return b.mass;}
 double body_get_diam(body b){return b.diam;}
 double* body_get_pos(body b){return b.pos;}
@@ -89,6 +122,6 @@ void body_print(body b){
 void body_write(body b, char* fn){
     FILE *f;
     f=fopen(fn,"a");
-    fprintf(f,"%f %f %f\n",b.vel[0],b.vel[1],b.vel[2]);
+    fprintf(f,"%f %f %f\n",b.pos[0],b.pos[1],b.pos[2]);
     fclose(f);
 }

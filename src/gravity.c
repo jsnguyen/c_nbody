@@ -32,21 +32,27 @@ void vecfgrav(double *vec, double m1, double m2, double *pa, double *pb){
     }
 }
 
-void apply_velverl(body *b, body **bs, int nb, double td){
+posvel apply_velverl(body *b, body *bs, int nb, double td){
     double fgrav_init[]={0,0,0};
     double fgrav_fina[]={0,0,0};
+    posvel nprop;
+    for(int i=0;i<nb;i++){
+        if(body_get_id(*b) != body_get_id(bs[i])){
+            vecfgrav(fgrav_init, body_get_mass(*b), body_get_mass(bs[i]), body_get_pos(*b), body_get_pos(bs[i]));
+        }
+    }
+    nprop.pos[0]=body_get_pos(*b)[0]+body_get_vel(*b)[0]*td+0.5*fgrav_init[0]/body_get_mass(*b)*td*td;
+    nprop.pos[1]=body_get_pos(*b)[1]+body_get_vel(*b)[1]*td+0.5*fgrav_init[1]/body_get_mass(*b)*td*td;
+    nprop.pos[2]=body_get_pos(*b)[2]+body_get_vel(*b)[2]*td+0.5*fgrav_init[2]/body_get_mass(*b)*td*td;
 
     for(int i=0;i<nb;i++){
-        vecfgrav(fgrav_init, body_get_mass(*b), body_get_mass(*bs[i]), body_get_pos(*b), body_get_pos(*bs[i]));
+        if(body_get_id(*b) != body_get_id(bs[i])){
+            vecfgrav(fgrav_fina, body_get_mass(*b), body_get_mass(bs[i]), nprop.pos       , body_get_pos(bs[i]));
+        }
     }
-    body_set_pos_x(b,body_get_pos(*b)[0]+body_get_vel(*b)[0]*td+0.5*fgrav_init[0]/body_get_mass(*b)*td*td);
-    body_set_pos_y(b,body_get_pos(*b)[1]+body_get_vel(*b)[1]*td+0.5*fgrav_init[1]/body_get_mass(*b)*td*td);
-    body_set_pos_z(b,body_get_pos(*b)[2]+body_get_vel(*b)[2]*td+0.5*fgrav_init[2]/body_get_mass(*b)*td*td);
+    nprop.vel[0]=body_get_vel(*b)[0]+0.5*(fgrav_init[0]/body_get_mass(*b)+fgrav_fina[0]/body_get_mass(*b))*td;
+    nprop.vel[1]=body_get_vel(*b)[1]+0.5*(fgrav_init[1]/body_get_mass(*b)+fgrav_fina[1]/body_get_mass(*b))*td;
+    nprop.vel[2]=body_get_vel(*b)[2]+0.5*(fgrav_init[2]/body_get_mass(*b)+fgrav_fina[2]/body_get_mass(*b))*td;
 
-    for(int i=0;i<nb;i++){
-        vecfgrav(fgrav_fina, body_get_mass(*b), body_get_mass(*bs[i]), body_get_pos(*b), body_get_pos(*bs[i]));
-    }
-    body_set_vel_x(b,body_get_vel(*b)[0]+0.5*(fgrav_init[0]/body_get_mass(*b)+fgrav_fina[0]/body_get_mass(*b))*td);
-    body_set_vel_y(b,body_get_vel(*b)[1]+0.5*(fgrav_init[1]/body_get_mass(*b)+fgrav_fina[1]/body_get_mass(*b))*td);
-    body_set_vel_z(b,body_get_vel(*b)[2]+0.5*(fgrav_init[2]/body_get_mass(*b)+fgrav_fina[2]/body_get_mass(*b))*td);
+    return nprop;
 }

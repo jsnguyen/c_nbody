@@ -19,9 +19,10 @@ typedef struct{
 } body;
 
 
-void body_init(body b);
+void body_init(body *b);
 body* body_create();
 
+void body_delete(body *b);
 void body_destroy(body *b);
 
 void body_set(body *b, int i, double m, double d, double p[3], double v[3], double a);
@@ -38,6 +39,7 @@ void body_set_vel_y(body *b, double v);
 void body_set_vel_z(body *b, double v);
 void body_set_angmom(body *b, double a);
 
+double body_get_id(body b);
 double body_get_mass(body b);
 double body_get_diam(body b);
 double* body_get_pos(body b);
