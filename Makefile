@@ -1,4 +1,4 @@
-CC=gcc
+CC=gcc-8
 
 SRCDIR=src
 OBJDIR=build
@@ -12,8 +12,8 @@ LIBDIRS=$(addprefix -L,$(_LIBDIRS))
 _LIBS=m
 LIBS=$(addprefix -l,$(_LIBS))
 
-CFLAGS=-O3 -Wall $(INCDIRS)
-LDFLAGS=-O3 $(INCDIRS) $(LIBDIRS) $(LIBS)
+CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
+LDFLAGS=-O3 -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
 
 _SRCFILES=body.c gravity.c sim.c
 SRCS=$(addprefix $(SRCDIR)/,$(_SRCFILES))

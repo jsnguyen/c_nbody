@@ -1,34 +1,19 @@
 #include "cnbody/gravity.h"
 
-double fgrav(double m1, double m2, double *pa, double *pb){
+/* ADDS TO VEC not overwrite */
+void vecfgrav(double *vec, double m1, double m2, double *pa, double *pb){
     const double G=6.67408e-11;
     double dir[3];
     for(int i=0;i<3;i++){
         dir[i]=pb[i]-pa[i];
     }
-    return G*m1*m2/(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]);
-}
-
-/* 
- * a is the pos of the body we are calculating
- * for dir = b-a, vector points towards b
- */
-void dgrav(double *dir, double *pa, double *pb){
-    for(int i=0;i<3;i++){
-        dir[i]=pb[i]-pa[i];
-    }
     double mag = sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]);
-    for(int i=0;i<3;i++){
-        dir[i]=dir[i]/mag;
+    if(mag<1e14){
+        mag=mag*10;
     }
-}
-
-/* ADDS TO VEC not overwrite */
-void vecfgrav(double *vec, double m1, double m2, double *pa, double *pb){
-    dgrav(vec,pa,pb);
-    double f = fgrav(m1,m2,pa,pb);
+    double f = G*m1*m2/(mag*mag);
     for(int i=0;i<3;i++){
-        vec[i] += vec[i]*f;
+        vec[i] += dir[i]/mag*f;
     }
 }
 
