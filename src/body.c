@@ -119,7 +119,7 @@ void body_print(body b){
     printf("angmom = %f\n",b.angmom);
 }
 
-void body_write(body b, char* fn){
+void body_write(body b, const char* fn){
     FILE *f;
     f=fopen(fn,"a");
     fprintf(f,"%f %f %f\n",b.pos[0],b.pos[1],b.pos[2]);

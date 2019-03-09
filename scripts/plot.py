@@ -15,6 +15,7 @@ timeline=[]
 with open(sys.argv[1]) as f:
     niter = f.readline()
     nb = f.readline()
+    td= f.readline()
     mass_low = f.readline()
     mass_up = f.readline()
     vel_low = f.readline()
@@ -23,6 +24,7 @@ with open(sys.argv[1]) as f:
 
     niter = int(niter)
     nb = int(nb)
+    nb = float(nb)
     mass_low = float(mass_low)
     mass_up = float(mass_up)
     cubelen = float(cubelen)

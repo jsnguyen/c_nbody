@@ -48,6 +48,6 @@ double body_get_angmom(body b);
 
 void body_print(body b);
 
-void body_write(body b, char* fn);
+void body_write(body b, const char* fn);
 
 #endif
