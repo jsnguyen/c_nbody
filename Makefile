@@ -15,7 +15,7 @@ LIBS=$(addprefix -l,$(_LIBS))
 CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
 LDFLAGS=-O3 -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
 
-_SRCFILES=body.c gravity.c sim.c
+_SRCFILES=body.c gravity.c sim.c config.c
 SRCS=$(addprefix $(SRCDIR)/,$(_SRCFILES))
 
 _OBJFILES=$(_SRCFILES:%.c=%.o)

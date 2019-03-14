@@ -5,6 +5,7 @@
 #include "omp.h"
 #include "cnbody/body.h"
 #include "cnbody/gravity.h"
+#include "cnbody/config.h"
 #define SOL_MASS 1.989e30
 #define EAR_MASS 5.972e24
 #define AU 1.396e11
@@ -61,23 +62,28 @@ static inline void print_params(const int n_thread, const int niter, const int n
 
 int main(int argc, char* argv[]){
     if(argc!=2){
-        printf("Usage: ./sim.exe <n threads>\n");
+        printf("Usage: ./sim.exe <config filename>\n");
         return(1);
     }
     srand((unsigned)time(NULL));
     /* rand is weird */
     rand(); rand(); rand();
 
-    const char*  fn       =  "out.txt";
-    const int    n_thread =  atoi(argv[1]);
-    const int    niter    =  1e2;
-    const int    nb       =  1e4;
-    const double td       =  1e4;
-    const double mass_low =  1e14*SOL_MASS;
-    const double mass_up  =  2e14*SOL_MASS;
-    const double vel_low  = -1e9;
-    const double vel_up   =  1e9;
-    const double cubelen  =  1e0*PARSEC;
+    config conf;
+    config_init(&conf);
+    config_read(&conf,argv[1]);
+    config_print(&conf);
+
+    const char*  fn       = conf.fn; 
+    const int    n_thread = conf.n_thread;
+    const int    niter    = conf.niter;
+    const int    nb       = conf.nb;
+    const double td       = conf.td;
+    const double mass_low = conf.mass_low*SOL_MASS;
+    const double mass_up  = conf.mass_up*SOL_MASS;
+    const double vel_low  = conf.vel_low;
+    const double vel_up   = conf.vel_up;
+    const double cubelen  = conf.cubelen*PARSEC;
 
     body bs[nb];
     for(int i=0;i<nb;i++){
@@ -93,7 +99,7 @@ int main(int argc, char* argv[]){
         body_print(bs[i]);
     }
     */
-    print_params(n_thread,niter,nb,td,mass_low,mass_up,vel_low,vel_up,cubelen);
+    //print_params(n_thread,niter,nb,td,mass_low,mass_up,vel_low,vel_up,cubelen);
     write_params(fn,niter,nb,td,mass_low,mass_up,vel_low,vel_up,cubelen);
     printf("Parameters written to %s.\n",fn);
 
@@ -162,6 +168,7 @@ int main(int argc, char* argv[]){
     }
     printf("Bodies deleted.\n");
 
+    config_destroy(&conf);
     printf("Success!\n");
     return 0;
 }
