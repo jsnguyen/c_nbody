@@ -47,19 +47,6 @@ static inline void write_params(const char* fn, const int niter, const int nb, c
     fclose(f);
 }
 
-static inline void print_params(const int n_thread, const int niter, const int nb, const double td, const double mass_low, const double mass_up, const double vel_low, const double vel_up, const double cubelen){
-    printf("** Parameters **\n");
-    printf("n_thread = %i\n",n_thread);
-    printf("niter    = %i\n",niter);
-    printf("nb       = %i\n",nb);
-    printf("td       = %f\n",td);
-    printf("mass_low = %f\n",mass_low);
-    printf("mass_up  = %f\n",mass_up);
-    printf("vel_low  = %f\n",vel_low);
-    printf("vel_up   = %f\n",vel_up);
-    printf("cubelen  = %f\n",cubelen);
-}
-
 int main(int argc, char* argv[]){
     if(argc!=2){
         printf("Usage: ./sim.exe <config filename>\n");
@@ -69,21 +56,21 @@ int main(int argc, char* argv[]){
     /* rand is weird */
     rand(); rand(); rand();
 
-    config conf;
-    config_init(&conf);
-    config_read(&conf,argv[1]);
-    config_print(&conf);
+    config *conf=NULL;
+    conf = config_create();
+    config_read(conf,argv[1]);
+    config_print(conf);
 
-    const char*  fn       = conf.fn; 
-    const int    n_thread = conf.n_thread;
-    const int    niter    = conf.niter;
-    const int    nb       = conf.nb;
-    const double td       = conf.td;
-    const double mass_low = conf.mass_low*SOL_MASS;
-    const double mass_up  = conf.mass_up*SOL_MASS;
-    const double vel_low  = conf.vel_low;
-    const double vel_up   = conf.vel_up;
-    const double cubelen  = conf.cubelen*PARSEC;
+    const char*  fn       = conf->fn; 
+    const int    n_thread = conf->n_thread;
+    const int    niter    = conf->niter;
+    const int    nb       = conf->nb;
+    const double td       = conf->td;
+    const double mass_low = conf->mass_low*SOL_MASS;
+    const double mass_up  = conf->mass_up*SOL_MASS;
+    const double vel_low  = conf->vel_low;
+    const double vel_up   = conf->vel_up;
+    const double cubelen  = conf->cubelen*PARSEC;
 
     body bs[nb];
     for(int i=0;i<nb;i++){
@@ -99,7 +86,7 @@ int main(int argc, char* argv[]){
         body_print(bs[i]);
     }
     */
-    //print_params(n_thread,niter,nb,td,mass_low,mass_up,vel_low,vel_up,cubelen);
+
     write_params(fn,niter,nb,td,mass_low,mass_up,vel_low,vel_up,cubelen);
     printf("Parameters written to %s.\n",fn);
 
@@ -158,7 +145,7 @@ int main(int argc, char* argv[]){
         loop_t = (double) (elaps_t - begin_loop_t)/ CLOCKS_PER_SEC;
         loop_ravg = (loop_t+i*loop_ravg)/(i+1);
 
-        printf("\r[%.2f%%] || elapsed: %.3fs || avg loop time: %.3fs || est time comp: %.3fs",(double) 100*(i+1)/niter,cpu_t,loop_ravg,loop_ravg*(niter-1-i));
+        printf("\r[%.2f%%] || elapsed: %.3fs ||  est time comp: %.3fs || avg loop time: %.3fs ||",(double) 100*(i+1)/niter,cpu_t,loop_ravg*(niter-1-i),loop_ravg);
         fflush(stdout);
     }
     printf("\n");
@@ -168,7 +155,7 @@ int main(int argc, char* argv[]){
     }
     printf("Bodies deleted.\n");
 
-    config_destroy(&conf);
+    config_destroy(conf);
     printf("Success!\n");
     return 0;
 }

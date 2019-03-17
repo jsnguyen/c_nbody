@@ -1,10 +1,16 @@
 #include "cnbody/config.h"
 
-void config_init(config *conf){
+config* config_create(){
+    config *conf;
+    conf = malloc(sizeof(config));
     conf->fn = malloc(BUFFSIZE*sizeof(char));
+    return conf;
 }
 
 void config_destroy(config *conf){
+    if(conf){
+        free(conf);
+    }
     if(conf->fn){
         free(conf->fn);
     }

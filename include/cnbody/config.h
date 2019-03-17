@@ -22,7 +22,7 @@ typedef struct{
     double cubelen;
 } config;
 
-void config_init(config *conf);
+config* config_create();
 void config_destroy(config *conf);
 void config_read(config *conf, const char* infile);
 void config_print(config *conf);

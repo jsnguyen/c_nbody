@@ -1,39 +1,40 @@
 CC=gcc-8
 
-SRCDIR=src
-OBJDIR=build
+CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
+LDFLAGS=-O3 -shared -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
 
-_INCDIRS=include
+_INCDIRS=/Users/jsnguyen/repos/cnbody/include
 INCDIRS=$(addprefix -I,$(_INCDIRS))
 
-_LIBDIRS=lib
+_LIBDIRS=/Users/jsnguyen/repos/cnbody/lib
 LIBDIRS=$(addprefix -L,$(_LIBDIRS))
 
 _LIBS=m
 LIBS=$(addprefix -l,$(_LIBS))
 
-CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
-LDFLAGS=-O3 -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
-
-_SRCFILES=body.c gravity.c sim.c config.c
+SRCDIR=src
+_SRCFILES=body.c gravity.c config.c
 SRCS=$(addprefix $(SRCDIR)/,$(_SRCFILES))
 
+OBJDIR=build
 _OBJFILES=$(_SRCFILES:%.c=%.o)
 OBJS=$(addprefix $(OBJDIR)/,$(_OBJFILES))
 
-EXES=sim.exe
+LIBDIR=lib
+LIBNAME=libnb.so
 
-all: $(EXES)
+all: $(LIBDIR)/$(LIBNAME)
 
-%.exe : $(OBJS)
+$(LIBDIR)/$(LIBNAME): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	$(CC) $< -c -o $@ $(CFLAGS)
+
 
 .SECONDARY: $(OBJS)
 .PHONY: clean
 
 clean:
 	rm $(OBJDIR)/*.o
-	rm *.exe
+	rm $(LIBDIR)/*.so
