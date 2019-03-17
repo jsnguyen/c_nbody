@@ -3,10 +3,10 @@ CC=gcc-8
 CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
 LDFLAGS=-O3 -shared -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
 
-_INCDIRS=/Users/jsnguyen/repos/cnbody/include
+_INCDIRS=include
 INCDIRS=$(addprefix -I,$(_INCDIRS))
 
-_LIBDIRS=/Users/jsnguyen/repos/cnbody/lib
+_LIBDIRS=lib
 LIBDIRS=$(addprefix -L,$(_LIBDIRS))
 
 _LIBS=m

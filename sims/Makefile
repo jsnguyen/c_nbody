@@ -1,9 +1,9 @@
 CC=gcc-8
 
-_INCDIRS=/Users/jsnguyen/repos/cnbody/include
+_INCDIRS=../include
 INCDIRS=$(addprefix -I,$(_INCDIRS))
 
-_LIBDIRS=/Users/jsnguyen/repos/cnbody/lib
+_LIBDIRS=../lib
 LIBDIRS=$(addprefix -L,$(_LIBDIRS))
 
 _LIBS=m nb

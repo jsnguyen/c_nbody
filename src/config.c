@@ -23,39 +23,40 @@ void config_read(config *conf, const char* infile){
     char line[BUFFSIZE];
     char *num;
     for(int i=0;i<NPARAMS;i++){
-        fgets(line,BUFFSIZE,fp);
-        num = strchr(line,'=')+1;
-        switch(i){
-            case 0:
-                strcpy(conf->fn,trim(num));
-                break;
-            case 1:
-                conf->n_thread = (int) atof(num);
-                break;
-            case 2:
-                conf->niter = (int) atof(num);
-                break;
-            case 3:
-                conf->nb = (int) atof(num);
-                break;
-            case 4:
-                conf->td = atof(num);
-                break;
-            case 5:
-                conf->mass_low = atof(num);
-                break;
-            case 6:
-                conf->mass_up = atof(num);
-                break;
-            case 7:
-                conf->vel_low = atof(num);
-                break;
-            case 8:
-                conf->vel_up = atof(num);
-                break;
-            case 9:
-                conf->cubelen = atof(num);
-                break;
+        if(fgets(line,BUFFSIZE,fp)){
+            num = strchr(line,'=')+1;
+            switch(i){
+                case 0:
+                    strcpy(conf->fn,trim(num));
+                    break;
+                case 1:
+                    conf->n_thread = (int) atof(num);
+                    break;
+                case 2:
+                    conf->niter = (int) atof(num);
+                    break;
+                case 3:
+                    conf->nb = (int) atof(num);
+                    break;
+                case 4:
+                    conf->td = atof(num);
+                    break;
+                case 5:
+                    conf->mass_low = atof(num);
+                    break;
+                case 6:
+                    conf->mass_up = atof(num);
+                    break;
+                case 7:
+                    conf->vel_low = atof(num);
+                    break;
+                case 8:
+                    conf->vel_up = atof(num);
+                    break;
+                case 9:
+                    conf->cubelen = atof(num);
+                    break;
+            }
         }
     }
     fclose(fp);
