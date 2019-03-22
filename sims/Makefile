@@ -22,6 +22,8 @@ EXES=sim.exe
 
 LIBNAME=libnb.so
 
+DIRGUARD=@mkdir -p $(@D)
+
 all: $(EXES)
 
 %.exe: $(OBJS)
@@ -29,7 +31,6 @@ all: $(EXES)
 
 %.o : %.c
 	$(CC) $< -c -o $@ $(CFLAGS)
-
 
 .SECONDARY: $(OBJS)
 .PHONY: clean
