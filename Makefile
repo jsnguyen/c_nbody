@@ -1,4 +1,4 @@
-CC=gcc-8
+CC=gcc
 
 _INCDIRS=include
 INCDIRS=$(addprefix -I,$(_INCDIRS))
