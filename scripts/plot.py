@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import matplotlib
@@ -36,17 +36,19 @@ with open(sys.argv[1]) as f:
 
         for _ in range(nb):
             x,y,z=f.readline().split()
-            X.append(x)
-            Y.append(y)
-            Z.append(z)
+            X.append(float(x))
+            Y.append(float(y))
+            Z.append(float(z))
 
         timeline.append((X,Y,Z))
 
-
 fig = plt.figure()
-ax = plt.axes(xlim=(-cubelen/2.0, cubelen/2.0), ylim=(-cubelen/2.0, cubelen/2.0))
+plt.xlim(-cubelen/2.0, cubelen/2.0)
+plt.ylim(-cubelen/2.0, cubelen/2.0)
 plt.xlabel("x-coordinate [m]")
 plt.ylabel("y-coordinate [m]")
+
+ax = plt.axes(xlim=(-cubelen/2.0, cubelen/2.0), ylim=(-cubelen/2.0, cubelen/2.0))
 line, = ax.plot([], [],marker='o',linestyle='none')
 def init():
     line.set_data([], [])
@@ -58,5 +60,6 @@ def animate(i):
 
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=niter, interval=20, blit=True)
 
-#plt.plot(X,Y, marker="o", linestyle="none")
+#plt.plot(X,Y, marker="o", linestyle="-")
 plt.show()
+
