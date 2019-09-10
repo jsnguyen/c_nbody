@@ -1,6 +1,6 @@
 # C N-Body Simulation
 
-Simple n-body simulation written entirely in C. Uses periodic boundary conditions and a tempered version of Newton's law of gravity to limit extra close encounters.
+Simple n-body simulation written entirely in C. Uses periodic boundary conditions and a tempered version of Newton's law of gravity to limit extra close encounters. Python 3.6+ required to plot properly.
 
 To build library:
 ```
