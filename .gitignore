@@ -4,3 +4,4 @@
 *.swp
 *.vim
 *.so.dSYM
+*.so

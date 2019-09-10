@@ -10,7 +10,7 @@ _LIBS=m nb
 LIBS=$(addprefix -l,$(_LIBS))
 
 CFLAGS=-O3 -fopenmp -Wall $(INCDIRS)
-LDFLAGS=-O3 -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS)
+LDFLAGS=-O3 -fopenmp $(INCDIRS) $(LIBDIRS) $(LIBS) -Wl,-rpath,$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/../lib
 
 _SRCFILES=sim.c
 SRCS=$(_SRCFILES)
